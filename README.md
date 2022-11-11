@@ -1,30 +1,98 @@
-# scalable data science
+# data_science_escalonavel
 
-https://henriqueajnb.github.io/data-science-escalavel/README.html
+## Tools used in this project
+* [Poetry](https://towardsdatascience.com/how-to-effortlessly-publish-your-python-package-to-pypi-using-poetry-44b305362f9f): Dependency management - [article](https://towardsdatascience.com/how-to-effortlessly-publish-your-python-package-to-pypi-using-poetry-44b305362f9f)
+* [hydra](https://hydra.cc/): Manage configuration files - [article](https://towardsdatascience.com/introduction-to-hydra-cc-a-powerful-framework-to-configure-your-data-science-projects-ed65713a53c6)
+* [pre-commit plugins](https://pre-commit.com/): Automate code reviewing formatting  - [article](https://towardsdatascience.com/4-pre-commit-plugins-to-automate-code-reviewing-and-formatting-in-python-c80c6d2e9f5?sk=2388804fb174d667ee5b680be22b8b1f)
+* [DVC](https://dvc.org/): Data version control - [article](https://towardsdatascience.com/introduction-to-dvc-data-version-control-tool-for-machine-learning-projects-7cb49c229fe0)
+* [pdoc](https://github.com/pdoc3/pdoc): Automatically create an API documentation for your project
 
-## As ferramentas usadas nesse template são:
+## Project structure
+```bash
+.
+├── config                      
+│   ├── main.yaml                   # Main configuration file
+│   ├── model                       # Configurations for training model
+│   │   ├── model1.yaml             # First variation of parameters to train model
+│   │   └── model2.yaml             # Second variation of parameters to train model
+│   └── process                     # Configurations for processing data
+│       ├── process1.yaml           # First variation of parameters to process data
+│       └── process2.yaml           # Second variation of parameters to process data
+├── data            
+│   ├── final                       # data after training the model
+│   ├── processed                   # data after processing
+│   ├── raw                         # raw data
+│   └── raw.dvc                     # DVC file of data/raw
+├── docs                            # documentation for your project
+├── dvc.yaml                        # DVC pipeline
+├── .flake8                         # configuration for flake8 - a Python formatter tool
+├── .gitignore                      # ignore files that cannot commit to Git
+├── Makefile                        # store useful commands to set up the environment
+├── models                          # store models
+├── notebooks                       # store notebooks
+├── .pre-commit-config.yaml         # configurations for pre-commit
+├── pyproject.toml                  # dependencies for poetry
+├── README.md                       # describe your project
+├── src                             # store source code
+│   ├── __init__.py                 # make src a Python module 
+│   ├── process.py                  # process data before training model
+│   └── train_model.py              # train model
+└── tests                           # store tests
+    ├── __init__.py                 # make tests a Python module 
+    ├── test_process.py             # test functions for process.py
+    └── test_train_model.py         # test functions for train_model.py
+```
 
-- [Poetry](https://python-poetry.org/): gerenciamento de pacotes e ambientes virtuais.
+## Set up the environment
+1. Install [Poetry](https://python-poetry.org/docs/#installation)
+2. Set up the environment:
+```bash
+make activate
+make setup
+```
 
-- [hydra](https://hydra.cc/docs/intro/): gerenciamento de arquivos de configuração.
+## Install new packages
+To install new PyPI packages, run:
+```bash
+poetry add <package-name>
+```
 
-- [plugins do pre-commit](https://pre-commit.com/): automação na formatação e revisão do código.
+## Run the entire pipeline
+To run the entire pipeline, type:
+```bash
+dvc repo
+```
 
-- [DVC](https://dvc.org/): versionamento de dados e experimentos.
+## Version your data
+Read [this article](https://towardsdatascience.com/introduction-to-dvc-data-version-control-tool-for-machine-learning-projects-7cb49c229fe0) on how to use DVC to version your data.
 
-- [pdoc](https://pdoc.dev/): criação de documentação automática para a API do seu projeto.
+Basically, you start with setting up a remote storage. The remote storage is where your data is stored. You can store your data on DagsHub, Google Drive, Amazon S3, Azure Blob Storage, Google Cloud Storage, Aliyun OSS, SSH, HDFS, and HTTP.
 
-## Dependências e ambiente virtual
+```bash
+dvc remote add -d remote <REMOTE-URL>
+```
 
-Este projeto usa o [Poetry](https://python-poetry.org/). O motivo é porque o Poetry nos permite:
+Commit the config file:
+```bash
+git commit .dvc/config -m "Configure remote storage"
+```
 
-- Separar as dependências principais das dependências indiretas em dois arquivos diferentes, ao invés de colocar todas elas em um único arquivo requirements.txt.
+Push the data to remote storage:
+```bash
+dvc push 
+```
 
-- Criar arquivos de dependência mais legíveis.
+Add and push all changes to Git:
+```bash
+git add .
+git commit -m 'commit-message'
+git push origin <branch>
+```
 
-- Remover todas as dependências indiretas ao remover um pacote.
+# Auto-generate API documentation
 
-- Evitar instalar novos pacotes que são conflitantes com aqueles preexistentes.
+To auto-generate API document for your project, run:
 
-
-
+```bash
+make docs
+```
