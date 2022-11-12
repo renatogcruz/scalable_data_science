@@ -1,4 +1,5 @@
-# data_science_escalonavel
+# [DATA SCIENCE | Escalonavel](https://henriqueajnb.github.io/data-science-escalavel/README.html)
+
 
 ## Tools used in this project
 * [Poetry](https://towardsdatascience.com/how-to-effortlessly-publish-your-python-package-to-pypi-using-poetry-44b305362f9f): Dependency management - [article](https://towardsdatascience.com/how-to-effortlessly-publish-your-python-package-to-pypi-using-poetry-44b305362f9f)
